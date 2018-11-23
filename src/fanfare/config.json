@@ -1,0 +1,10 @@
+{
+    "theme": "Silhouette",
+    "limit_breaker": 40,
+    "multilapse_limit": 2,
+    "failed_ease": 1,
+    "play_audio_fx": true,
+    "show_visual_fx": true,
+    "fx_repetition_frequency": 1,
+    "use_mplayer_for_audio": false
+}

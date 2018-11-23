@@ -1,0 +1,1 @@
+This folder will not be overwritten on updates (on Anki21).
