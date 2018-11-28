@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 from aqt import mw
@@ -48,18 +48,13 @@ Reviewer._linkHandler = wrap(Reviewer._linkHandler, fan.linkHandler, "around")
 ################################################################
 
 # Replace /user/collection.media folder with actual addon path
-targetPath=targetLength=None
-def webviewRestrictionBypass():
-    global targetPath, targetLength
-    from aqt.mediasrv import RequestHandler
-    targetPath=os.path.join(mw.pm.profileFolder(),'collection.media','_ankiAO')
-    targetLength=len(targetPath)+1
-    RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExports, 'around')
-
 def _redirectWebExports(self, path, _old):
+    targetPath=os.path.join(os.getcwd(),ADDON_TAG)
     if path.startswith(targetPath):
+        targetLength=len(targetPath)+1
         return os.path.join(ADDON_FOLDER,path[targetLength:])
     return _old(self,path)
 
 if ANKI21:
-    addHook('profileLoaded',webviewRestrictionBypass)
+    from aqt.mediasrv import RequestHandler
+    RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExports, 'around')

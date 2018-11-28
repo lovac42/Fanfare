@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 from aqt import mw
@@ -82,7 +82,7 @@ class Settings:
 
     def getResourceFolder(self, abs=False):
         if ANKI21 and not abs:
-            return os.path.join('_ankiAO',MOD_DIR,'user_files',self.theme_dir)
+            return os.path.join(ADDON_TAG,MOD_DIR,'user_files',self.theme_dir)
         return os.path.join(MOD_ABS,'user_files',self.theme_dir)
 
     def getPathOf(self, key, abs=False):

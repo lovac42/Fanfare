@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 #=== CONFIGS ===============================
@@ -22,4 +22,5 @@ ANKI21 = version.startswith("2.1.")
 MOD_ABS,_ = os.path.split(__file__)
 MOD_DIR = os.path.basename(MOD_ABS)
 ADDON_FOLDER=mw.pm.addonFolder()
+ADDON_TAG='_ankiAO'
 
