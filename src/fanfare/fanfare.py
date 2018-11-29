@@ -97,7 +97,7 @@ class Fanfare():
     def autoplayOnQ(self, r, card, _old):
         "adds delay between overlapping sound tracks"
         bool=_old(r,card)
-        if bool and r.state=='question':
+        if bool and r.state=='question' and self.duration:
             dur=max(0,min(1200,self.fb.audio_duration-self.duration))
             mw.progress.timer(dur+200,lambda:playFromText(card.q()),False)
             return False
