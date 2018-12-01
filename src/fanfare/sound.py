@@ -2,20 +2,24 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 import anki
 import wave, contextlib
 import threading, time
 from anki.sound import clearAudioQueue
-from .lib.playsound import *
 from .const import *
 
 
 class FxWavPlayer(threading.Thread):
     def run(self):
-        playsound(self.getName())
+        try: #For missing modules on non-window platforms
+            from .lib.playsound import playsound
+            playsound(self.getName())
+        except:
+            anki.sound.play(self.getName())
+            print("error using soundFX API, default to mplayer")
 
     def play(self, mplayer=False):
         if mplayer:
