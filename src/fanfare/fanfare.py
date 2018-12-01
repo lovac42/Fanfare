@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.2
+# Version: 0.0.3
 
 
 from aqt import mw
@@ -125,8 +125,9 @@ class Fanfare():
             mw.bottomWeb.hide()
             if self.state==REVIEW and self.checkLimitBreaker():
                 self.state=INTERMISSION
-                mdur=self.settings.theme['duration_min']
-                self.duration=max(mdur,self.duration//1.4)
+                if self.duration:
+                    mdur=self.settings.theme['duration_min']
+                    self.duration=max(mdur,self.duration//1.4)
             else:
                 self.state=REVIEW
             mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False)
@@ -156,7 +157,7 @@ class Fanfare():
 
     def rewards(self, sch, _old):
         delay=gap=0
-        if self.state != OVERVIEW:
+        if self.state != OVERVIEW and self.duration:
             gap=self.settings.theme['delay_loots']
             dur=max(0,self.fb.audio_duration-self.duration)
             delay=dur+gap
