@@ -1,6 +1,9 @@
 # Fanfare
 AnkiAddon: Gamification, feedback, and reinforcement
 
+https://ankiweb.net/shared/info/2073603704
+
+
 ## About:
 In the current Anki setup, we have kung fu cats for rewards and wiener dogs popping up in the middle of a review session. There's also a guy making fart noises intermittently. Not sure what that last one was about...but it's very distracting: cats-dogs-fart, cats-dogs-fart. This addon replaces the previous attempts with a unified theme. Two sample themes are currently included: Silhouette and Bruce_Lee. The Bruce_Lee theme will work well with <a href="https://ankiweb.net/shared/info/715575551">Life Drain</a> to induce a small amount of excitement into the reviews. Of course, they become stale when overused. But hopefully, as designers get interested in this, more themes will become available.  
 
