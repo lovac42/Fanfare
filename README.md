@@ -23,3 +23,19 @@ You can use the addon manager to toggle certain features on/off. Anki 2.0 will r
 ## API USED:
 playsound: https://pypi.org/project/playsound/#files
 
+
+
+# FAQ:
+
+### Why not randomize feedbacks?
+Rewards should be randomized, feedbacks should not because it is something already expected. Think of it as payday. How would you like it if your boss randomizes your pay date? Randomizing feedback induces stress into your study sessions. Rewards on the other hand are like xmas bonuses, they should be randomized.
+
+### Why insert FX between cards?
+Anki records the timing of each review; how long it took before the "Show Answer" button was pressed. This information is reflected in your review logs and stats. Inserting FX between cards is the only way to eliminate any discrepancies in timing. Did you get distracted? Were your eyes wondering around looking at kittens or wiener dogs instead of the topic question? Except for day dreaming, it ensures that five seconds is actually five seconds of review time, no random pop ups. Accurate revLog is vital for future projects involving generating matrixes from Anki's review logs.
+
+### Why the time gap?
+What's wrong with that? Supermemo forces the users to press the spacebar after each review. This sort pause ensures that users are digesting their studying material one piece at a time. Jumping from card to card without any digestions or reflection will lead to unstable memory and lapses. And these lapses will mount up causing large amounts of reviews. So what's wrong with chewing your food before taking another bite?
+
+The pause between cards are theme dependent. It is up to the theme designer to decide how much time to pause, how long they should flash their artwork at the user. If you don't like long pauses, you may change the duration for each theme in the theme setting file.
+
+
