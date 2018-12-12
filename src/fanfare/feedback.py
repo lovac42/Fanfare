@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 from aqt import mw
@@ -59,18 +59,21 @@ class Feedback():
         dur=self._play(fx,dmin)
         return min(dmax,max(dmin,dur-200))
 
-
+#--------------------------------
     def reloadDeck(self):
         self.ch_image.hideOverview()
-        dur=self._play(self.reloadFx)
-        dmax=self.settings.theme['duration_max']
+        dmin=self.settings.theme['duration_reload_min']
+        dmax=self.settings.theme['duration_reload_max']
+        dur=self._play(self.reloadFx,dmin)
         return min(dmax,dur)
 
     def startDeck(self):
         self.ch_image.hideOverview()
-        dur=self._play(self.startFx)
-        dmax=self.settings.theme['duration_max']
+        dmin=self.settings.theme['duration_start_min']
+        dmax=self.settings.theme['duration_start_max']
+        dur=self._play(self.startFx,dmin)
         return min(dmax,dur)
+#--------------------------------
 
     def _play(self, fx, dur=0):
         clearAudioQueue()
