@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.2
+# Version: 0.0.3
 
 
 from aqt import mw
@@ -81,7 +81,7 @@ class Reward(Loots):
             i=self.decksPic[did]
         if did in self.decksMov:
             a=self.decksMov[did]
-        if i<0 or a<0:
+        if i<0 and a<0:
             i,a=self.setUniqueMedia()
 
         if i>-1: #image
