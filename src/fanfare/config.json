@@ -6,5 +6,6 @@
     "play_audio_fx": true,
     "show_visual_fx": true,
     "fx_repetition_frequency": 1,
+    "card_autoplay_delay": 200,
     "use_mplayer_for_audio": false
 }

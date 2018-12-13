@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.2
+# Version: 0.0.3
 
 
 from aqt import mw
@@ -15,14 +15,19 @@ from .utils import *
 
 
 DEFAULT_THEME_SETTINGS={
-    "version":1,
+    "version":2,
     "delay_loots":500,
     "duration_min":300,
     "duration_max":1200,
     "duration_meh":300,
+    "duration_start_min":500,
+    "duration_start_max":1500,
+    "duration_reload_min":500,
+    "duration_reload_max":1500,
     "neutral_img":'neutral.png',
     "pairs_fname":"pairs.json",
     "imgfx":{
+        "hide_bg":True,
         "y_offset":-100,
         "x_offset":0
     },
@@ -72,6 +77,7 @@ class Settings:
         s=os.path.join(MOD_ABS,'user_files',t,'settings.json')
         tdata=readJson(s)
         if tdata:
+            self.theme=DEFAULT_THEME_SETTINGS #reset
             self.theme.update(tdata)
 
     def setupFolders(self):

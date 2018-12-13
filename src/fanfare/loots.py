@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.3
 
 
 from aqt import mw
@@ -75,23 +75,24 @@ class Reward(Loots):
         self.decksPic={}
         self.decksMov={}
 
-    def getAudio(self):
-        return self.audio
-
     def getLoots(self, did):
         i=a=-1 #indexes
         if did in self.decksPic:
             i=self.decksPic[did]
         if did in self.decksMov:
             a=self.decksMov[did]
-        if i<0 or a<0:
+        if i<0 and a<0:
             i,a=self.setUniqueMedia()
 
-        self.decksPic[did]=i
-        img=os.path.join(self.RDIR,self.arr_images[i])
+        if i>-1: #image
+            self.decksPic[did]=i
+            img=os.path.join(self.RDIR,self.arr_images[i])
 
-        self.decksMov[did]=a
-        self.audio= os.path.join(self.ADIR,self.arr_sounds[a])
+        if a>-1: #audio
+            self.decksMov[did]=a
+            auName=self.arr_sounds[a]
+            auPath=os.path.join(self.ADIR,self.arr_sounds[a])
+            self.sound=(a,auName,auPath)
         return img
 
 

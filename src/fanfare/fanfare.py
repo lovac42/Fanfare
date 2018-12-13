@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.3
+# Version: 0.0.4
 
 
 from aqt import mw
@@ -97,9 +97,12 @@ class Fanfare():
     def autoplayOnQ(self, r, card, _old):
         "adds delay between overlapping sound tracks"
         bool=_old(r,card)
-        if bool and r.state=='question' and self.duration:
-            dur=max(0,min(1200,self.fb.audio_duration-self.duration))
-            mw.progress.timer(dur+200,lambda:playFromText(card.q()),False)
+        if bool and r.state=='question' and self.duration and \
+        not self.settings.config['use_mplayer_for_audio']:
+            delay=self.settings.config['card_autoplay_delay']
+            dmax=self.settings.theme['duration_max']
+            dur=max(0,min(dmax,self.fb.audio_duration-self.duration))
+            mw.progress.timer(dur+delay,lambda:playFromText(card.q()),False)
             return False
         return bool
 
