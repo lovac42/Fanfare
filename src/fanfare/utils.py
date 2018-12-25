@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 from __future__ import unicode_literals
@@ -10,6 +10,8 @@ import random, os, sys
 from aqt import mw
 from codecs import open
 from anki.utils import tmpdir, json
+import collections
+
 from .const import *
 
 
@@ -40,3 +42,17 @@ def readJson(path):
         with open(path, 'r', encoding='utf-8') as f:
             data=f.read()
         return json.loads(data)
+
+
+#From: https://stackoverflow.com/questions/3232943/
+def nestedUpdate(d, u):
+    if ANKI21:
+        itms=u.items()
+    else:
+        itms=u.iteritems()
+    for k, v in itms:
+        if isinstance(v, collections.Mapping):
+            d[k] = nestedUpdate(d.get(k, {}), v)
+        else:
+            d[k] = v
+    return d

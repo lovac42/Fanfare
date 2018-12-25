@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.3
+# Version: 0.0.4
 
 
 from aqt import mw
@@ -15,7 +15,7 @@ from .utils import *
 
 
 DEFAULT_THEME_SETTINGS={
-    "version":2,
+    "version":3,
     "delay_loots":500,
     "duration_min":300,
     "duration_max":1200,
@@ -35,6 +35,8 @@ DEFAULT_THEME_SETTINGS={
         "start":"start",
         "lapse":"lapse",
         "pass":"pass",
+        "good":"pass",
+        "easy":"pass",
         "break":"break",
         "reload":"reload",
         "reward":"reward"
@@ -56,15 +58,15 @@ class Settings:
         self.setConfigCB()
 
     def setConfigCB(self):
-        try: #Must be loaded after profile loads, after addonmanger21 loads.
+        #Must be loaded after profile loads, after addonmanger21 loads.
+        if getattr(mw.addonManager, "setConfigUpdatedAction", None):
             mw.addonManager.setConfigUpdatedAction(__name__, self.setConfigs) 
-        except AttributeError: pass
 
     def setConfigs(self, config=None):
         if not config:
-            try:
+            if getattr(mw.addonManager, "getConfig", None):
                 config=mw.addonManager.getConfig(__name__)
-            except AttributeError:
+            else:
                 path = os.path.join(MOD_ABS, 'config.json')
                 config=readJson(path)
         if config:
@@ -78,7 +80,7 @@ class Settings:
         tdata=readJson(s)
         if tdata:
             self.theme=DEFAULT_THEME_SETTINGS #reset
-            self.theme.update(tdata)
+            self.theme=nestedUpdate(self.theme,tdata)
 
     def setupFolders(self):
         self.theme_dir=self.config['theme']
