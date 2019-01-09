@@ -2,7 +2,7 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.3
+# Version: 0.0.4
 
 
 from aqt import mw
@@ -29,7 +29,7 @@ class VsFeedback():
 
     def show(self, img):
         if not self.settings.isShowImage(): return
-        if self.settings.theme['imgfx']['hide_bg']:
+        if self.settings.theme['imgfx'].get('hide_bg',True):
             mw.web.eval("$('#qa').css('visibility','hidden')")
         lbl=self.label
         pos=self.getPos(lbl,img)
@@ -58,7 +58,7 @@ class VsFeedback():
 #but it sometimes gets squished due to malformed html/css template.
 class VsFeedback21(VsFeedback):
     def show(self, img):
-        if self.settings.theme['imgfx']['hide_bg']:
+        if self.settings.theme['imgfx'].get('hide_bg',True):
             mw.web.eval("$('#qa').css('visibility','hidden')")
         abs_img=img.replace(ADDON_TAG,ADDON_FOLDER)
         lbl=self.label #shows in overview, but not in review

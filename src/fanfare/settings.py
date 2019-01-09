@@ -5,17 +5,20 @@
 # Version: 0.0.4
 
 
+import os
 from aqt import mw
 from aqt.qt import *
 from anki.hooks import addHook, runHook
 from codecs import open
+from aqt.utils import showInfo
 from anki.utils import json
-import os
 from .utils import *
 
 
+SUPPORTED_THEME_VER = 3
+
 DEFAULT_THEME_SETTINGS={
-    "version":3,
+    "version":SUPPORTED_THEME_VER,
     "delay_loots":500,
     "duration_min":300,
     "duration_max":1200,
@@ -55,17 +58,18 @@ class Settings:
 
     def __init__(self):
         self.setConfigs()
-        self.setConfigCB()
+        # self.setConfigCB()
 
-    def setConfigCB(self):
-        #Must be loaded after profile loads, after addonmanger21 loads.
-        if getattr(mw.addonManager, "setConfigUpdatedAction", None):
-            mw.addonManager.setConfigUpdatedAction(__name__, self.setConfigs) 
+    # def setConfigCB(self):
+        # #Must be loaded after profile loads, after addonmanger21 loads.
+        # if getattr(mw.addonManager, "setConfigUpdatedAction", None):
+            # mw.addonManager.setConfigUpdatedAction(__name__, self.setConfigs) 
 
     def setConfigs(self, config=None):
         if not config:
             if getattr(mw.addonManager, "getConfig", None):
                 config=mw.addonManager.getConfig(__name__)
+                mw.addonManager.setConfigUpdatedAction(__name__, self.setConfigs) 
             else:
                 path = os.path.join(MOD_ABS, 'config.json')
                 config=readJson(path)
@@ -81,6 +85,8 @@ class Settings:
         if tdata:
             self.theme=DEFAULT_THEME_SETTINGS #reset
             self.theme=nestedUpdate(self.theme,tdata)
+            if self.theme['version'] > SUPPORTED_THEME_VER:
+                showInfo('This fanfare theme is too new, try updating fanfare.')
 
     def setupFolders(self):
         self.theme_dir=self.config['theme']
