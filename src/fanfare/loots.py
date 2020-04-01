@@ -98,7 +98,7 @@ class Reward(Loots):
 
 
 class Intermission(Loots):
-    CSS = '' if ANKI21 else mw.sharedCSS
+    CSS = None if ANKI21 else mw.sharedCSS
 
     def _linkHandler(self, url):
         if url=='refresh':

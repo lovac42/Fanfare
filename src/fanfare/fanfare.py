@@ -14,6 +14,9 @@ from .feedback import *
 from .loots import *
 from .settings import Settings
 
+from .lib.com.lovac42.anki.version import POINT_VERSION
+
+
 # CONSTANTS FOR STATE:
 OVERVIEW=1
 REVIEW=2
@@ -100,7 +103,8 @@ class Fanfare():
             delay=self.settings.config['card_autoplay_delay']
             dmax=self.settings.theme['duration_max']
             dur=max(0,min(dmax,self.fb.audio_duration-self.duration))
-            mw.progress.timer(dur+delay,lambda:playFromText(card.q()),False)
+            if POINT_VERSION < 17:
+                mw.progress.timer(dur+delay,lambda:playFromText(card.q()),False)
             return False
         return bool
 
@@ -118,7 +122,7 @@ class Fanfare():
         self.wasHard=ease<=2
         lapsed=ease<=self.settings.config['failed_ease']
         self.duration=self.fb.activate(lapsed)
-        _old(r,ease)
+        return _old(r,ease)
 
 
     def delayNextCard(self, r, _old):
@@ -134,7 +138,7 @@ class Fanfare():
             mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False)
         else:
             self.state=REVIEW
-            _old(r)
+            return _old(r)
 
 
     def _nextCard(self, r, nxCard):
