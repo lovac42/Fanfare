@@ -7,8 +7,15 @@
 import anki
 import wave, contextlib
 import threading, time
-from anki.sound import clearAudioQueue
+
 from .const import *
+from .lib.playsound import PlaysoundException
+
+try:
+    from aqt.sound import _player
+    import aqt.sound as s
+except ImportError:
+    import anki.sound as s
 
 
 class FxWavPlayer(threading.Thread):
@@ -16,13 +23,16 @@ class FxWavPlayer(threading.Thread):
         try: #For missing modules on non-window platforms
             from .lib.playsound import playsound
             playsound(self.getName())
-        except:
-            anki.sound.play(self.getName())
+        except ImportError:
+            s.play(self.getName())
             print("error using soundFX API, default to mplayer")
+        except PlaysoundException:
+            s.play(self.getName())
+            print("Invalid 8.3 wav filename, default to mplayer")
 
     def play(self, mplayer=False):
         if mplayer:
-            anki.sound.play(self.getName())
+            s.play(self.getName())
         else:
             self.start()
 
