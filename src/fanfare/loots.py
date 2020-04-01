@@ -14,6 +14,7 @@ import random, os, re
 from .const import *
 from .utils import *
 from .effect import Effects
+from .lib.com.lovac42.anki.version import ANKI21
 
 
 class Loots(Effects):
@@ -98,6 +99,8 @@ class Reward(Loots):
 
 
 class Intermission(Loots):
+    CSS = '' if ANKI21 else mw.sharedCSS
+
     def _linkHandler(self, url):
         if url=='refresh':
             mw.delayedMaybeReset()
@@ -107,15 +110,17 @@ class Intermission(Loots):
     def stop(self):
         mw.web.eval("$('#intermission').css('display','')")
 
-    def start(self, delay=0):
-        mw.requireReset(True)
+    def setLinkHandler(self):
         if ANKI21:
             mw.web.resetHandlers()
             mw.web.onBridgeCmd = lambda url: self._linkHandler(url)
-            cmd='pycmd'
-        else:
-            mw.web.setLinkHandler(lambda url: self._linkHandler(url))
-            cmd='py.link'
+            return 'pycmd'
+        mw.web.setLinkHandler(lambda url: self._linkHandler(url))
+        return 'py.link'
+
+    def start(self, delay=0):
+        mw.requireReset(True)
+        cmd = self.setLinkHandler()
 
         self.setUniqueMedia()
         img,au=self.get()
@@ -132,6 +137,6 @@ Resume Now</button></td></tr></table><br><br>
 onclick="%s('replay');return false;" />
 %s</center></div>"""%(cmd,img,cmd,msg)
 
-        mw.web.stdHtml(html, css='' if ANKI21 else mw.sharedCSS)
-        # mw.bottomWeb.hide()
+        mw.web.stdHtml(html, css=self.CSS)
+        mw.bottomWeb.hide()
         mw.web.setFocus()

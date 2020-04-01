@@ -16,7 +16,7 @@ STARTUP_DELAY = 300 #in ms
 import os, re
 from aqt import mw
 from anki import version
-ANKI21 = version.startswith("2.1.")
+PY3 = version.startswith("2.1.")
 
 #All for calculating the addon ID and prevent conflicts w/ other similar pathnames on A21
 MOD_ABS,_ = os.path.split(__file__)

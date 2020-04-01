@@ -2,7 +2,6 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.4
 
 
 from aqt import mw
@@ -14,7 +13,6 @@ from .const import *
 from .feedback import *
 from .loots import *
 from .settings import Settings
-
 
 # CONSTANTS FOR STATE:
 OVERVIEW=1
@@ -41,7 +39,7 @@ class Fanfare():
         self.limit=random.randint(3,7)
 
     def onProfileLoaded(self):
-        if ANKI21:
+        if PY3:
             self.initConfigurations()
         else:
             mw.progress.timer(STARTUP_DELAY,self.initConfigurations,False)

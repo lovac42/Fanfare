@@ -2,7 +2,6 @@
 # Copyright: (C) 2018 Lovac42
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
-# Version: 0.0.2
 
 
 from aqt import mw
@@ -16,6 +15,8 @@ from .utils import *
 from .audFeedback import *
 from .vsFeedback import *
 from .effect import *
+
+from .lib.com.lovac42.anki.version import ANKI21
 
 
 class Feedback():
