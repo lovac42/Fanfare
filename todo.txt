@@ -1,0 +1,5 @@
+fix autoplay (autoPlayFromText deprecated)
+
+rewrite to use new hooks
+
+
