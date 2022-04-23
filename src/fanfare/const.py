@@ -21,5 +21,4 @@ PY3 = version.startswith("2.1.")
 MOD_ABS,_ = os.path.split(__file__)
 MOD_DIR = os.path.basename(MOD_ABS)
 ADDON_FOLDER=mw.pm.addonFolder()
-ADDON_TAG='_ankiAO'
-
+ADDON_TAG = os.path.dirname(__file__)

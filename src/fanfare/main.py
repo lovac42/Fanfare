@@ -13,7 +13,7 @@ import anki.sched
 from .const import *
 from .fanfare import *
 
-from .lib.com.lovac42.anki.version import ANKI21, CCBC
+from .lib.com.lovac42.anki.version import ANKI21, CCBC, PATCH_VERSION
 
 
 fan=Fanfare()
@@ -50,13 +50,33 @@ else:
 ################################################################
 
 # Replace /user/collection.media folder with actual addon path
-def _redirectWebExports(self, path, _old):
+def _redirectWebExports(path):
     targetPath=os.path.join(os.getcwd(),ADDON_TAG)
     if path.startswith(targetPath):
         targetLength=len(targetPath)+1
         return os.path.join(ADDON_FOLDER,path[targetLength:])
+    return None
+
+def _redirectWebExportsOld(self, path, _old):
+    redirected = _redirectWebExports(path)
+    if redirected:
+        return redirected
     return _old(self,path)
 
+def _redirectWebExportsNew(path, _old):
+    redirected = _redirectWebExports(path)
+    if redirected:
+        return redirected
+    return _old(path)
+
 if ANKI21:
-    from aqt.mediasrv import RequestHandler
-    RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExports, 'around')
+    mw.addonManager.setWebExports(__name__, r"user_files/.*")
+    if PATCH_VERSION >= 50:
+        from aqt import mediasrv
+        mediasrv._extract_addon_request = wrap(mediasrv._extract_addon_request, _redirectWebExportsNew, 'around')
+    elif PATCH_VERSION >= 28:
+        from aqt import mediasrv
+        mediasrv._redirectWebExports = wrap(mediasrv._redirectWebExports, _redirectWebExportsNew, 'around')
+    else:
+        from aqt.mediasrv import RequestHandler
+        RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExportsOld, 'around')

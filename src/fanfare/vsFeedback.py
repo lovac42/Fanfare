@@ -60,6 +60,7 @@ class VsFeedback21(VsFeedback):
         if self.settings.theme['imgfx'].get('hide_bg',True):
             mw.web.eval("$('#qa').css('visibility','hidden')")
         abs_img=img.replace(ADDON_TAG,ADDON_FOLDER)
+        img=img.replace(ADDON_TAG, f"/_addons")
         lbl=self.label #shows in overview, but not in review
         pos=self.getPos(lbl,abs_img)
 
