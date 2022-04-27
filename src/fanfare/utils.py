@@ -43,17 +43,9 @@ def readJson(path):
         return json.loads(data)
 
 
-
-
-from anki import version
-PY3=version.startswith("2.1.")
-
 #From: https://stackoverflow.com/questions/3232943/
 def nestedUpdate(d, u):
-    if PY3:
-        itm=u.items()
-    else:
-        itm=u.iteritems()
+    itm=u.items()
     for k, v in itm:
         if isinstance(v, collections.Mapping):
             d[k] = nestedUpdate(d.get(k, {}), v)

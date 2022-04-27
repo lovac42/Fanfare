@@ -13,7 +13,7 @@ import anki.sched
 from .const import *
 from .fanfare import *
 
-from .lib.com.lovac42.anki.version import ANKI21, CCBC, PATCH_VERSION
+from .lib.com.lovac42.anki.version import PATCH_VERSION
 
 
 fan=Fanfare()
@@ -32,17 +32,11 @@ Reviewer.autoplay = wrap(Reviewer.autoplay, fan.autoplayOnQ, "around")
 
 
 #Rewards
-anki.sched.Scheduler.finishedMsg = wrap(anki.sched.Scheduler.finishedMsg, fan.rewards, 'around')
-if ANKI21 or CCBC:
-    import anki.schedv2
-    anki.schedv2.Scheduler.finishedMsg = wrap(anki.schedv2.Scheduler.finishedMsg, fan.rewards, 'around')
+import anki.schedv2
+anki.schedv2.Scheduler.finishedMsg = wrap(anki.schedv2.Scheduler.finishedMsg, fan.rewards, 'around')
 
-if ANKI21:
-    #Disables keys during fx
-    Reviewer.onEnterKey = wrap(Reviewer.onEnterKey, fan.onEnterKey, "around")
-else:
-    Reviewer._keyHandler = wrap(Reviewer._keyHandler, fan.keyHandler, "around")
-    Reviewer._linkHandler = wrap(Reviewer._linkHandler, fan.linkHandler, "around")
+#Disables keys during fx
+Reviewer.onEnterKey = wrap(Reviewer.onEnterKey, fan.onEnterKey, "around")
 
 
 ################################################################
@@ -69,14 +63,13 @@ def _redirectWebExportsNew(path, _old):
         return redirected
     return _old(path)
 
-if ANKI21:
-    mw.addonManager.setWebExports(__name__, r"user_files/.*")
-    if PATCH_VERSION >= 50:
-        from aqt import mediasrv
-        mediasrv._extract_addon_request = wrap(mediasrv._extract_addon_request, _redirectWebExportsNew, 'around')
-    elif PATCH_VERSION >= 28:
-        from aqt import mediasrv
-        mediasrv._redirectWebExports = wrap(mediasrv._redirectWebExports, _redirectWebExportsNew, 'around')
-    else:
-        from aqt.mediasrv import RequestHandler
-        RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExportsOld, 'around')
+mw.addonManager.setWebExports(__name__, r"user_files/.*")
+if PATCH_VERSION >= 50:
+    from aqt import mediasrv
+    mediasrv._extract_addon_request = wrap(mediasrv._extract_addon_request, _redirectWebExportsNew, 'around')
+elif PATCH_VERSION >= 28:
+    from aqt import mediasrv
+    mediasrv._redirectWebExports = wrap(mediasrv._redirectWebExports, _redirectWebExportsNew, 'around')
+else:
+    from aqt.mediasrv import RequestHandler
+    RequestHandler._redirectWebExports = wrap(RequestHandler._redirectWebExports, _redirectWebExportsOld, 'around')

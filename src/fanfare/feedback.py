@@ -16,9 +16,6 @@ from .audFeedback import *
 from .vsFeedback import *
 from .effect import *
 
-from .lib.com.lovac42.anki.version import ANKI21
-
-
 class Feedback():
     audio_duration=0
     failCnt=-1
@@ -26,10 +23,7 @@ class Feedback():
 
     def __init__(self, settings):
         self.settings=settings
-        if ANKI21:
-            self.ch_image=VsFeedback21(settings)
-        else: 
-            self.ch_image=VsFeedback(settings)
+        self.ch_image=VsFeedback21(settings)
         self.ch_audio=AudFeedback(settings)
 
         self.lapseFx=Effects('lapse', settings)

@@ -5,17 +5,11 @@
 
 from anki import version
 
-ANKI20 = version.startswith("2.0.")
-
-CCBC = version.endswith("ccbc")
-
-ANKI21 = not CCBC and version.startswith("2.1.")
-
-VERSION = version.split('_')[0] #rm ccbc
+VERSION = version.split('_')[0]
 m,n,p = VERSION.split('.')
 
 MAJOR_VERSION = int(m)
 MINOR_VERSION = int(n)
 PATCH_VERSION = int(p)
-POINT_VERSION = 0 if ANKI20 else PATCH_VERSION
+POINT_VERSION = PATCH_VERSION
 

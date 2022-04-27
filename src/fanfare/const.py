@@ -4,18 +4,8 @@
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
 
 
-#=== CONFIGS ===============================
-
-# For Anki2.0, used to allow the backported addonManager21 to load first
-STARTUP_DELAY = 300 #in ms
-
-#=== END_CONFIGS ===========================
-############################################
-
-import os, re
+import os
 from aqt import mw
-from anki import version
-PY3 = version.startswith("2.1.")
 
 #All for calculating the addon ID and prevent conflicts w/ other similar pathnames on A21
 MOD_ABS,_ = os.path.split(__file__)

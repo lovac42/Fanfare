@@ -3,6 +3,7 @@
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
 
+import re
 
 from aqt import mw
 from aqt.qt import *
@@ -11,9 +12,6 @@ from codecs import open
 from anki.utils import json
 import os
 from .utils import *
-
-from .lib.com.lovac42.anki.version import ANKI21, CCBC
-
 
 DEFAULT_THEME_SETTINGS={
     "version":3,
@@ -90,7 +88,7 @@ class Settings:
         self.neutral_img=os.path.join(self.resrc_dir,self.theme['neutral_img'])
 
     def getResourceFolder(self, abs=False):
-        if ANKI21 and not abs:
+        if not abs:
             return os.path.join(ADDON_TAG,MOD_DIR,'user_files',self.theme_dir)
         return os.path.join(MOD_ABS,'user_files',self.theme_dir)
 

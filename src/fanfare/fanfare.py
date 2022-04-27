@@ -42,10 +42,7 @@ class Fanfare():
         self.limit=random.randint(3,7)
 
     def onProfileLoaded(self):
-        if PY3:
-            self.initConfigurations()
-        else:
-            mw.progress.timer(STARTUP_DELAY,self.initConfigurations,False)
+        self.initConfigurations()
 
     def initConfigurations(self):
         self.settings=Settings()
