@@ -9,11 +9,10 @@ from aqt.qt import *
 from anki.hooks import addHook
 from anki.sound import clearAudioQueue, play
 from anki.utils import json
-import random, os, re
+import random, os, re, json
 from .const import *
 from .utils import *
 from .effect import Effects
-
 
 class Loots(Effects):
     timer=None
@@ -95,41 +94,37 @@ class Reward(Loots):
         return img
 
 
-
 class Intermission(Loots):
-    def _linkHandler(self, url):
-        if url=='refresh':
-            mw.delayedMaybeReset()
-        elif url=='replay':
-            self.replay()
-
     def stop(self):
         mw.web.eval("$('#intermission').css('display','')")
 
-    def setLinkHandler(self):
-        mw.web.resetHandlers()
-        mw.web.onBridgeCmd = lambda url: self._linkHandler(url)
-        return 'pycmd'
-
     def start(self, delay=0):
         mw.requireReset(True)
-        cmd = self.setLinkHandler()
-
         self.setUniqueMedia()
         img,au=self.get()
         Loots.start(self, delay)
         msg='<br><i>( Click Image To Replay )</i>' if au else ''
 
-        html="""<div id="intermission" style="display:none;">
+        html="""<div id="intermission">
 <center><table><tr><td><h1>Intermission 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></td>
 <td valign="bottom"><button id="resume" class="but " 
-onclick="%s('refresh');return false;" autofocus>
+onclick="pycmd('refresh');return false;" autofocus>
 Resume Now</button></td></tr></table><br><br>
 <img src="%s" style="max-width:100%%" 
-onclick="%s('replay');return false;" />
-%s</center></div>"""%(cmd,img,cmd,msg)
+onclick="pycmd('replay');return false;" />
+%s</center></div>"""%(img,msg)
 
-        mw.web.stdHtml(html)
+        mw.web.page().runJavaScript("""
+document.getElementById("qa").style.display = 'none';
+var intermission = document.getElementById("intermission");
+if(!intermission) {
+  var intermissionHTML=%s;
+  document.getElementById("qa").outerHTML+=intermissionHTML;
+}
+else {
+    intermission.style.display = 'block';
+}
+""" % json.dumps(html))
         mw.bottomWeb.hide()
         mw.web.setFocus()

@@ -15,9 +15,27 @@ from .fanfare import *
 
 from .lib.com.lovac42.anki.version import PATCH_VERSION
 
+from aqt.gui_hooks import webview_did_receive_js_message
+
 
 fan=Fanfare()
 
+def linkHandler(handled, message, context):
+    if message == 'refresh':
+        mw.web.page().runJavaScript("""
+document.getElementById("intermission").style.display = 'none';
+document.getElementById("qa").style.display = 'block';
+""")
+        return (True, None)
+    elif message == 'replay':
+        fan.recess.replay()
+        return (True, None)
+    elif not fan.locked:
+        return handled
+    else:
+        return (True, None)
+
+webview_did_receive_js_message.append(linkHandler)
 
 ##################################################
 # Monkey Patches - adds delay for animation smoothness

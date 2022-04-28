@@ -54,7 +54,8 @@ class Fanfare():
         self.shown=False
 
     def onShowQuestion(self):
-        self.locked=False
+        if not self.state==RELOAD:
+            self.locked=False
 
     def onReset(self):
         if self.state==INTERMISSION:

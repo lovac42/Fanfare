@@ -12,6 +12,7 @@ from codecs import open
 from anki.utils import json
 import os
 from .utils import *
+from pathlib import PurePosixPath
 
 DEFAULT_THEME_SETTINGS={
     "version":3,
@@ -89,7 +90,7 @@ class Settings:
 
     def getResourceFolder(self, abs=False):
         if not abs:
-            return os.path.join(ADDON_TAG,MOD_DIR,'user_files',self.theme_dir)
+            return str(PurePosixPath('_addons',MOD_DIR,'user_files',self.theme_dir))
         return os.path.join(MOD_ABS,'user_files',self.theme_dir)
 
     def getPathOf(self, key, abs=False):
