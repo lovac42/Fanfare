@@ -31,7 +31,7 @@ class Loots(Effects):
 
     def start(self, delay=0):
         if self.timer: self.timer.stop()
-        self.timer=mw.progress.timer(delay+200,self.replay,False,parent=mw)
+        self.timer=mw.progress.timer(delay+200,self.replay,False)
 
     def replay(self):
         au=self.getAudio()
