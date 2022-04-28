@@ -157,8 +157,7 @@ class Fanfare():
             self.recess.start(self.fb.audio_duration)
             return True
 
-
-    def rewards(self, sch, _old):
+    def getRewards(self):
         delay=gap=0
         if self.state != OVERVIEW and self.duration:
             gap=self.settings.theme['delay_loots']
@@ -167,8 +166,8 @@ class Fanfare():
         self.reward.start(delay)
         did=mw.col.decks.selected()
         img=self.reward.getLoots(did)
-        msg="""<img src="%s" style="max-width:100%%" /><br>"""%img
-        return msg+_old(sch)
+        msg="""<img id="fanfare-reward" src="%s" style="max-width:100%%; display: block; margin: 0 auto;" /><br>"""%img
+        return msg
 
     def onEnterKey(self, r, _old): #v2.1
         if not self.locked: return _old(r)

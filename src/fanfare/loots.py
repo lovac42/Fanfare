@@ -91,7 +91,8 @@ class Reward(Loots):
             auName=self.arr_sounds[a]
             auPath=os.path.join(self.ADIR,self.arr_sounds[a])
             self.sound=(a,auName,auPath)
-        return img
+        # we need to construct an absolute link to display in the congrats screen
+        return f"http://127.0.0.1:{mw.mediaServer.getPort()}/{img}"
 
 
 class Intermission(Loots):

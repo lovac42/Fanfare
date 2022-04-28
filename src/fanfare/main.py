@@ -3,6 +3,7 @@
 # Support: https://github.com/lovac42/Fanfare
 # License: GNU GPL, version 3 or later; http://www.gnu.org/copyleft/gpl.html
 
+import json
 
 from aqt import mw
 from aqt.qt import *
@@ -15,13 +16,14 @@ from .fanfare import *
 
 from .lib.com.lovac42.anki.version import PATCH_VERSION
 
-from aqt.gui_hooks import webview_did_receive_js_message
-
+from aqt.gui_hooks import webview_did_receive_js_message, overview_did_refresh
+from aqt.overview import Overview
 
 fan=Fanfare()
 
 def linkHandler(handled, message, context):
     if message == 'refresh':
+        mw.requireReset()
         mw.web.page().runJavaScript("""
 document.getElementById("intermission").style.display = 'none';
 document.getElementById("qa").style.display = 'block';
@@ -30,12 +32,30 @@ document.getElementById("qa").style.display = 'block';
     elif message == 'replay':
         fan.recess.replay()
         return (True, None)
-    elif not fan.locked:
-        return handled
     else:
-        return (True, None)
+        return handled
 
 webview_did_receive_js_message.append(linkHandler)
+
+#Rewards
+def showRewards(overview: Overview):
+    def on_congrats(in_congrats):
+        if in_congrats:
+            overview.web.eval("""
+            var rewardsHTML = %s;
+            document.body.insertAdjacentHTML('beforeend', rewardsHTML);
+            """ % json.dumps(fan.getRewards()))
+    overview.web.evalWithCallback("""
+    (() => {
+        var rewardElement = document.getElementById("fanfare-reward");
+        if(rewardElement) {
+            rewardElement.remove();
+        }
+        return %s
+    })();
+    """ % ('false' if sum(mw.col.sched.counts()) else 'true'), on_congrats)
+
+overview_did_refresh.append(showRewards)
 
 ##################################################
 # Monkey Patches - adds delay for animation smoothness
@@ -48,10 +68,6 @@ Reviewer._answerCard = wrap(Reviewer._answerCard, fan.affirm, "around")
 Reviewer.nextCard = wrap(Reviewer.nextCard, fan.delayNextCard, "around")
 Reviewer.autoplay = wrap(Reviewer.autoplay, fan.autoplayOnQ, "around")
 
-
-#Rewards
-import anki.schedv2
-anki.schedv2.Scheduler.finishedMsg = wrap(anki.schedv2.Scheduler.finishedMsg, fan.rewards, 'around')
 
 #Disables keys during fx
 Reviewer.onEnterKey = wrap(Reviewer.onEnterKey, fan.onEnterKey, "around")
