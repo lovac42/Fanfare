@@ -170,13 +170,6 @@ class Fanfare():
         msg="""<img src="%s" style="max-width:100%%" /><br>"""%img
         return msg+_old(sch)
 
-
-
-    #Prevents keypress during FX
-    def linkHandler(self, r, url, _old):
-        if not self.locked: return _old(r,url)
-    def keyHandler(self, r, evt, _old): #v2.0
-        if not self.locked: return _old(r,evt)
     def onEnterKey(self, r, _old): #v2.1
         if not self.locked: return _old(r)
 
