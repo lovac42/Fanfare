@@ -102,7 +102,7 @@ class Fanfare():
             dmax=self.settings.theme['duration_max']
             dur=max(0,min(dmax,self.fb.audio_duration-self.duration))
             if POINT_VERSION < 17:
-                mw.progress.timer(dur+delay,lambda:playFromText(card.q()),False)
+                mw.progress.timer(dur+delay,lambda:playFromText(card.q()),False,parent=mw)
             return False
         return bool
 
@@ -133,7 +133,7 @@ class Fanfare():
                     self.duration=max(mdur,self.duration//1.4)
             else:
                 self.state=REVIEW
-            mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False)
+            mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False,parent=mw)
         else:
             self.state=REVIEW
             return _old(r)
