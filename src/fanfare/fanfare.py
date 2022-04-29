@@ -124,20 +124,17 @@ class Fanfare():
 
 
     def delayNextCard(self, r, _old):
-        if self.state<=RELOAD:
-            mw.bottomWeb.hide()
-            if self.state==REVIEW and self.checkLimitBreaker():
-                self.state=INTERMISSION
-                if self.duration:
-                    mdur=self.settings.theme['duration_min']
-                    self.duration=max(mdur,self.duration//1.4)
-            else:
-                self.state=REVIEW
-            mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False)
+        mw.bottomWeb.hide()
+        if self.state==REVIEW and self.checkLimitBreaker():
+            self.state=INTERMISSION
+            if self.duration:
+                mdur=self.settings.theme['duration_min']
+                self.duration=max(mdur,self.duration//1.4)
         else:
             self.state=REVIEW
-            return _old(r)
-
+        mw.progress.timer(self.duration,lambda:self._nextCard(r,_old),False)
+        if self.state>RELOAD:
+            self.state=REVIEW
 
     def _nextCard(self, r, nxCard):
         self.fb.stop()
@@ -147,6 +144,7 @@ class Fanfare():
             mw.bottomWeb.show()
         else:
             self.recess.stop()
+
 
 
     def checkLimitBreaker(self):

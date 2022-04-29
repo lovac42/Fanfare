@@ -67,18 +67,19 @@ class VsFeedback21(VsFeedback):
 style="width: %d; height: %d; position:fixed; left:%dpx; top: %dpx;" />
 """%(img, lbl.width(),lbl.height(), pos.x(),pos.y())
 
-        mw.web.page().runJavaScript("""
-try{ //reviewer
-  var img=%s
-  document.getElementById("qa").outerHTML+=img
-}catch(err){ //overview
-  document.body.outerHTML+=img
-}"""%json.dumps(html) )
+        mw.reviewer.web.eval("""
+var img=%s;
+try {
+  document.getElementById("qa").insertAdjacentHTML('afterend', img);
+} catch(err) { //overview
+  document.body.insertAdjacentHTML('afterend', img);
+}
+"""%json.dumps(html) )
 
     def close(self):
-        mw.web.page().runJavaScript("""
-try{
-  document.getElementById("visualFeedback21_img").outerHTML=""
-}catch(err){}
+        mw.reviewer.web.eval("""
+try {
+    document.getElementById("visualFeedback21_img").remove();
+} catch(err) {}
 """)
 
